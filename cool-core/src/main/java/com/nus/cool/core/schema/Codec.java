@@ -39,6 +39,12 @@ public enum Codec {
   INT32,
 
   /**
+   * Code for INTBIT data
+   */
+
+  INTBIT,
+
+  /**
    * Code for bit vector
    */ 
   BitVector,
