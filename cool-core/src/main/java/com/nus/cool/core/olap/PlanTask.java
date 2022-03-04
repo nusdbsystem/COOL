@@ -25,8 +25,6 @@ import java.net.URI;
  * TODO: will change the type of task from Object to
  * other specific one. 
  * 
- * @author David
- *
  */
 public class PlanTask {
 	
