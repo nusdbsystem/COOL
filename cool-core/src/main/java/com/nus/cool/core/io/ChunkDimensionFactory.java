@@ -27,10 +27,6 @@ import java.nio.MappedByteBuffer;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-/**
- * @author david
- *
- */
 public class ChunkDimensionFactory {
 
 	private ChunkColumnDictFactory dictFactory;
