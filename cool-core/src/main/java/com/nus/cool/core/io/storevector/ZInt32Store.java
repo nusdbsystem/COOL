@@ -20,7 +20,11 @@ package com.nus.cool.core.io.storevector;
 
 import com.google.common.primitives.Ints;
 import com.nus.cool.core.util.IntBuffers;
+
+import java.io.DataOutput;
+import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 
 public class ZInt32Store implements ZIntStore, InputVector {
@@ -31,6 +35,15 @@ public class ZInt32Store implements ZIntStore, InputVector {
 
   public ZInt32Store(int count) {
     this.count = count;
+  }
+
+  public ZInt32Store(byte[] compressed, int offset, int unused) {
+    ByteBuffer b = ByteBuffer.wrap(compressed, offset, 4).order(ByteOrder.nativeOrder());
+    this.count = b.getInt();
+    int length = count * Ints.BYTES;
+    ByteBuffer buf = ByteBuffer.wrap(compressed, offset + 4, length);
+    buf.order(ByteOrder.nativeOrder());
+    this.buffer = buf.asIntBuffer();
   }
 
   public static ZIntStore load(ByteBuffer buffer, int n) {
@@ -45,6 +58,16 @@ public class ZInt32Store implements ZIntStore, InputVector {
   }
 
   @Override
+  public int sizeInByte() {
+    return 0;
+  }
+
+  @Override
+  public void rewind() {
+
+  }
+
+  @Override
   public int find(int key) {
     return IntBuffers.binarySearch(this.buffer, 0, this.buffer.limit(), key);
   }
@@ -52,6 +75,21 @@ public class ZInt32Store implements ZIntStore, InputVector {
   @Override
   public int get(int index) {
     return this.buffer.get(index);
+  }
+
+  @Override
+  public void put(int[] val, int offset, int length) {
+
+  }
+
+  @Override
+  public void put(int index, int val) {
+
+  }
+
+  @Override
+  public int binarySearch(int key) {
+    return 0;
   }
 
   @Override
@@ -77,5 +115,10 @@ public class ZInt32Store implements ZIntStore, InputVector {
     this.buffer = buffer.asIntBuffer();
     buffer.position(newLimit);
     buffer.limit(limit);
+  }
+
+  @Override
+  public void writeTo(DataOutput out) throws IOException {
+
   }
 }

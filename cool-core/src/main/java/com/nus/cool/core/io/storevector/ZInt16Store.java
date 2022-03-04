@@ -20,7 +20,11 @@ package com.nus.cool.core.io.storevector;
 
 import com.google.common.primitives.Shorts;
 import com.nus.cool.core.util.ShortBuffers;
+
+import java.io.DataOutput;
+import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.ShortBuffer;
 
 public class ZInt16Store implements ZIntStore, InputVector {
@@ -32,6 +36,16 @@ public class ZInt16Store implements ZIntStore, InputVector {
   public ZInt16Store(int count) {
     this.count = count;
   }
+
+  public ZInt16Store(byte[] compressed, int offset, int unused) {
+    ByteBuffer b = ByteBuffer.wrap(compressed, offset, 4).order(ByteOrder.nativeOrder());
+    count = b.getInt();
+    int length = count * Shorts.BYTES;
+    this.buffer = ByteBuffer.wrap(compressed, offset + 4, length)
+            .order(ByteOrder.nativeOrder()).asShortBuffer();
+  }
+
+
 
   public static ZIntStore load(ByteBuffer buffer, int n) {
     ZIntStore store = new ZInt16Store(n);
@@ -45,6 +59,16 @@ public class ZInt16Store implements ZIntStore, InputVector {
   }
 
   @Override
+  public int sizeInByte() {
+    return 0;
+  }
+
+  @Override
+  public void rewind() {
+
+  }
+
+  @Override
   public int find(int key) {
       if (key > Short.MAX_VALUE || key < 0) {
           return -1;
@@ -55,6 +79,21 @@ public class ZInt16Store implements ZIntStore, InputVector {
   @Override
   public int get(int index) {
     return (this.buffer.get(index) & 0xFFFF);
+  }
+
+  @Override
+  public void put(int[] val, int offset, int length) {
+
+  }
+
+  @Override
+  public void put(int index, int val) {
+
+  }
+
+  @Override
+  public int binarySearch(int key) {
+    return 0;
   }
 
   @Override
@@ -80,5 +119,10 @@ public class ZInt16Store implements ZIntStore, InputVector {
     this.buffer = buffer.asShortBuffer();
     buffer.position(newLimit);
     buffer.limit(limit);
+  }
+
+  @Override
+  public void writeTo(DataOutput out) throws IOException {
+
   }
 }

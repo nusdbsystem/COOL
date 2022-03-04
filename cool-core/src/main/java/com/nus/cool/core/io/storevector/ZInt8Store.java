@@ -19,7 +19,11 @@
 package com.nus.cool.core.io.storevector;
 
 import com.nus.cool.core.util.ByteBuffers;
+
+import java.io.DataOutput;
+import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 /**
  * Decompress data which stores integers in one byte
@@ -45,6 +49,17 @@ public class ZInt8Store implements InputVector, ZIntStore {
     this.count = count;
   }
 
+
+  public ZInt8Store(byte[] compressed, int offset, int unused) {
+    ByteBuffer b = ByteBuffer.wrap(compressed, offset, 4).order(ByteOrder.nativeOrder());
+    this.count = b.getInt();
+
+    int length = count;
+
+    this.buffer = ByteBuffer.wrap(compressed, offset+4, length).slice();
+  }
+
+
   public static ZIntStore load(ByteBuffer buffer, int n) {
     ZIntStore store = new ZInt8Store(n);
     store.readFrom(buffer);
@@ -54,6 +69,16 @@ public class ZInt8Store implements InputVector, ZIntStore {
   @Override
   public int size() {
     return this.count;
+  }
+
+  @Override
+  public int sizeInByte() {
+    return 0;
+  }
+
+  @Override
+  public void rewind() {
+
   }
 
   @Override
@@ -67,6 +92,21 @@ public class ZInt8Store implements InputVector, ZIntStore {
   @Override
   public int get(int index) {
     return (this.buffer.get(index) & 0xFF);
+  }
+
+  @Override
+  public void put(int[] val, int offset, int length) {
+
+  }
+
+  @Override
+  public void put(int index, int val) {
+
+  }
+
+  @Override
+  public int binarySearch(int key) {
+    return 0;
   }
 
   @Override
@@ -92,5 +132,10 @@ public class ZInt8Store implements InputVector, ZIntStore {
     this.buffer = buffer.slice();
     buffer.position(newLimit);
     buffer.limit(limit);
+  }
+
+  @Override
+  public void writeTo(DataOutput out) throws IOException {
+
   }
 }
