@@ -29,6 +29,9 @@ import java.nio.IntBuffer;
  */
 public class IntBuffers {
 
+  public static int binarySearch(IntBuffer data, int key) {
+    return binarySearch(data, data.position(), data.limit(), key);
+  }
 
   /**
    * Search index of key by binary search
