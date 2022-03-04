@@ -27,10 +27,7 @@ import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-/**
- * @author david
- *
- */
+
 public class ChunkAxisFilter implements AxisFilter {
 
 	private int[] fields;

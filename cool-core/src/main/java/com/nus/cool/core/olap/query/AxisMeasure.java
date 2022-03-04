@@ -19,10 +19,6 @@
 
 package com.nus.cool.core.olap.query;
 
-/**
- * @author david
- *
- */
 public class AxisMeasure {
 
 	private AggregatorType aggregator;

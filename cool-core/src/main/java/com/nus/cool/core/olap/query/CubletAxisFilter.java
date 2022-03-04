@@ -26,10 +26,6 @@ import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-/**
- * @author david
- *
- */
 public class CubletAxisFilter implements AxisFilter {
 	
 	private Axis axis;

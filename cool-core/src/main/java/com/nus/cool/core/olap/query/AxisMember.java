@@ -21,10 +21,6 @@ package com.nus.cool.core.olap.query;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-/**
- * @author david
- *
- */
 public class AxisMember {
 	
 	private String[] member = new String[0];

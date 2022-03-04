@@ -24,8 +24,6 @@ import java.util.List;
 /**
  * Filter operator for restricting members in axes.
  * 
- * @author david
- *
  */
 public interface AxisFilter {
 	
