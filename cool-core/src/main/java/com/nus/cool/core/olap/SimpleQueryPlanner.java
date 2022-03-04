@@ -24,7 +24,6 @@ import org.olap4j.mdx.SelectNode;
 /**
  * Toy query planner implementation for testing
  * 
- * @author david
  *
  *
  */

@@ -23,10 +23,7 @@ import com.google.common.base.MoreObjects;
 
 import java.util.Objects;
 
-/**
- * @author David
- *
- */
+
 public class QueryID {
 
 	private int id;
