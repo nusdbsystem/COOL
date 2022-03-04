@@ -20,8 +20,8 @@
 package com.nus.cool.core.olap.query;
 
 import com.google.common.collect.Lists;
-import sg.edu.nus.comp.aeolus.core.io.Chunk;
-import sg.edu.nus.comp.aeolus.core.io.ChunkDimension;
+import com.nus.cool.core.io.Chunk;
+import com.nus.cool.core.io.ChunkDimension;
 
 import java.util.List;
 
@@ -40,7 +40,7 @@ public class ChunkAxisFilter implements AxisFilter {
 	private boolean hasFilter;
 
 	private void fillIn(Chunk chunk, List<int[]> cubletMembers,
-			List<int[]> chunkMembers) {
+						List<int[]> chunkMembers) {
 		ChunkDimension[] dimensions = new ChunkDimension[fields.length];
 		for (int i = 0; i < dimensions.length; i++)
 			dimensions[i] = (ChunkDimension) chunk.getDimensionColumn(fields[i]);

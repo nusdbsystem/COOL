@@ -19,23 +19,18 @@
 
 package com.nus.cool.core.olap.schema;
 
-import sg.edu.nus.comp.aeolus.core.olap.schema.TableSchema.FieldDef;
 
-/**
- * @author david
- *
- */
 public class FieldSchema {
 	
 	private int fieldID;
 	
-	private FieldDef fieldDef;
+	private TableSchema.FieldDef fieldDef;
 	
 	private boolean isKeyField;
 	
 	private TableSchema tableSchema;
 	
-	public FieldSchema(TableSchema tableSchema, int fieldID, FieldDef fieldDef) {
+	public FieldSchema(TableSchema tableSchema, int fieldID, TableSchema.FieldDef fieldDef) {
 		this.tableSchema = tableSchema;
 		this.fieldID = fieldID;
 		this.fieldDef = fieldDef;

@@ -20,7 +20,7 @@
 package com.nus.cool.core.olap.query;
 
 import com.google.common.collect.Lists;
-import sg.edu.nus.comp.aeolus.core.io.CubletReadStore;
+import com.nus.cool.core.io.CubletReadStore;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class CubletAxisFilter implements AxisFilter {
 	private List<int[]> includeSet = Lists.newArrayList();
 	
 	private List<int[]> excludeSet = Lists.newArrayList();
-	
+
 	private void fillIn(CubletReadStore rs, AxisMember[] memberSet, List<int[]> memberIDs) {
 		int[] fields = axis.getFields();
 		for(AxisMember member : memberSet) {
@@ -49,19 +49,19 @@ public class CubletAxisFilter implements AxisFilter {
 				} else {
 					bHit = false;
 					break;
-				}				
+				}
 			}
 			if(bHit)
 				memberIDs.add(termID);
 		}
 	}
-	
+
 	public CubletAxisFilter(CubletReadStore rs, Axis axis) {
 		this.axis = checkNotNull(axis);
-		
+
 		fillIn(rs, axis.getIncludeMembers(), includeSet);
 		fillIn(rs, axis.getExcludeMembers(), excludeSet);
-		
+
 		this.isHit = !includeSet.isEmpty() || !excludeSet.isEmpty();
 	}
 
