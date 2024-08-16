@@ -16,53 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package com.nus.cool.core.io.readstore;
 
+import com.nus.cool.core.field.FieldValue;
 import com.nus.cool.core.io.Input;
-import com.nus.cool.core.io.storevector.InputVector;
 import com.nus.cool.core.schema.FieldType;
-import java.nio.ByteBuffer;
 
+/**
+ * Interface of read stores of fields in data chunks.
+ */
 public interface FieldRS extends Input {
 
+  FieldType getFieldType();
+
   /**
-   * Return the hash index vector. If the field is
-   * indexed by range indexing, an IllegalStateException
-   * is thrown.
+   * Get the idx tuple's value in this field.
    *
-   * @return
+   * @param idx index of tuple
+   * @return int globalId of value
    */
-
-  InputVector getKeyVector();
-
-  /**
-   * Returns the value vector of this field.
-   *
-   * @return
-   */
-  InputVector getValueVector();
-
-  /**
-   * Returns the minKey if the field is range indexed.
-   * IllegalStateException is thrown if the field is hash indexed.
-   *
-   * @return
-   */
-  int minKey();
-
-  /**
-   * Returns the maxKey if the field is range indexed.
-   * IllegalStateException is thrown if the field is hash indexed.
-   *
-   * @return
-   */
-  int maxKey();
-
-  /**
-   * Returns true if the field is a hash(i.e., set) indexed field
-   * @return
-   */
-  boolean isSetField();
-
-  void readFromWithFieldType(ByteBuffer buf, FieldType fieldType);
+  FieldValue getValueByIndex(int idx);
 }

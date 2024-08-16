@@ -16,22 +16,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package com.nus.cool.core.io.storevector;
 
 import java.nio.ByteBuffer;
 
-public class RLEInputVector implements InputVector {
+/**
+ * Input vector of a run-length-encoded structure.
+ */
+public class RLEInputVector implements InputVector<Integer> {
 
+  // total number of blocks
   private int blks;
 
   private ByteBuffer buffer;
 
   private int curBlk;
 
+  // begin offset
   private int boff;
 
+  // end offset
   private int bend;
 
+  // current value
   private int bval;
 
   @Override
@@ -40,14 +48,14 @@ public class RLEInputVector implements InputVector {
   }
 
   @Override
-  public int find(int key) {
+  public Integer find(Integer key) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public int get(int index) {
+  public Integer get(int index) {
     int offset = this.boff;
-    this.skipTo(index);
+    this.skipTo(index); // skip to one block, and read the value
     int v = next();
     this.boff = offset;
     return v;
@@ -59,7 +67,7 @@ public class RLEInputVector implements InputVector {
   }
 
   @Override
-  public int next() {
+  public Integer next() {
     if (this.boff < this.bend) {
       this.boff++;
       return bval;
@@ -76,20 +84,20 @@ public class RLEInputVector implements InputVector {
       this.curBlk = 0;
       readNextBlock();
     }
-      while (pos >= this.bend && this.curBlk < this.blks) {
-          readNextBlock();
-      }
-      if (pos >= this.bend) {
-          throw new IllegalArgumentException("Too large pos param");
-      }
+    while (pos >= this.bend && this.curBlk < this.blks) {
+      readNextBlock();
+    }
+    if (pos >= this.bend) {
+      throw new IllegalArgumentException("Too large pos param");
+    }
     this.boff = pos;
   }
 
   @Override
   public void readFrom(ByteBuffer buffer) {
-    int zLen = buffer.getInt();
+    final int zLen = buffer.getInt();
     this.blks = buffer.getInt();
-    int oldLimit = buffer.limit();
+    final int oldLimit = buffer.limit();
     int newLimit = buffer.position() + zLen;
     buffer.limit(newLimit);
     this.buffer = buffer.slice().order(buffer.order());
@@ -97,6 +105,9 @@ public class RLEInputVector implements InputVector {
     buffer.limit(oldLimit);
   }
 
+  /**
+   * Move to the next block.
+   */
   public void nextBlock(Block blk) {
     if (this.boff < this.bend) {
       blk.value = this.bval;
@@ -112,6 +123,13 @@ public class RLEInputVector implements InputVector {
     this.boff = this.bend;
   }
 
+  /**
+   * read block, and update current value.
+   * read 8 bites first,
+   * first two bites => size of value
+   * medium two bites => size of boff
+   * last two bites => size of bend
+   */
   private void readNextBlock() {
     int b = this.buffer.get();
     this.bval = read((b >> 4) & 3);
@@ -120,27 +138,30 @@ public class RLEInputVector implements InputVector {
     this.curBlk++;
   }
 
+  // todo(naili) why do we need & 0xff, already read same bytes.
   private int read(int width) {
     switch (width) {
       case 1:
+        // Reads the byte and get the lower 8 bites
         return this.buffer.get() & 0xff;
       case 2:
+        // read the next two bytes and get the lower 16 bites
         return this.buffer.getShort() & 0xffff;
       case 3:
       case 0:
+        // get the lower 32 bites
         return this.buffer.getInt();
       default:
         throw new IllegalArgumentException("Incorrect number of bytes");
     }
   }
 
+  /**
+   * Data block.
+   */
   public static class Block {
-
     public int value;
-
     public int off;
-
     public int len;
-
   }
 }

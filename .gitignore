@@ -1,5 +1,10 @@
 # idea
 .idea/
+tree.txt
+*/tree.txt
+
+# vscode
+.vscode
 
 # product
 target/
@@ -15,7 +20,12 @@ dependency-reduced-pom.xml
 */*/*.iml
 
 # dataset source files
+CubeRepo/
 datasetSource/
+
+# log file
+cool.log
+*/cool.log
 
 .DS_Store
 NOTICE
